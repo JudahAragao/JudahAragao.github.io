@@ -4,7 +4,7 @@ import Button from "../../components/Button";
 import * as S from './styles'
 
 const Home = () => {
-    return <S.Container>
+    return <S.Container id="home">
         <S.Im>
             <S.GroupText>
                 <p>Oi! Eu sou <span className="destaque">Judah Aragão</span> </p>
