@@ -20,12 +20,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-br" suppressHydrationWarning={true}>
-      <body className={`${inconsolata.className} font-mono`} suppressHydrationWarning={true}>
+      <body className={`font-mono`} suppressHydrationWarning={true} >
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
-          disableTransitionOnChange
+          disableTransitionOnChange={false}
         >
           {children}
         </ThemeProvider>
