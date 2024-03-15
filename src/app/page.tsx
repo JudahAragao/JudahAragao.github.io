@@ -41,7 +41,7 @@ export default function Home() {
   const dataEducations = [
     {
       companyName: 'Instituto Federal de Educação, Ciência e Tecnologia de Sergipe - IFS',
-      companyPhoto: 'http://www.ifs.edu.br/images/exemplo_emblemas/ifs_logo.png',
+      companyPhoto: '/ifs_logo.png',
       description: 'Tecnologia em Análise e Desenvolvimento de Sistemas',
       inicio: '2019',
       fim: '2023',
@@ -71,7 +71,7 @@ export default function Home() {
     },
     {
       companyName: 'Controladoria-Geral do Município de Aracaju - CGM',
-      companyPhoto: 'https://upload.wikimedia.org/wikipedia/commons/b/bb/Bras%C3%A3o_de_Aracaju.svg',
+      companyPhoto: '/Brasão_de_Aracaju.svg',
       description: 'Estagiário de suporte e desenvolvimento',
       inicio: '02 Mar 2021',
       fim: '08 Set 2022',
