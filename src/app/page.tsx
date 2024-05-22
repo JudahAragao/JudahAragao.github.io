@@ -42,6 +42,18 @@ export default function Home() {
         },
       },
     },
+    {
+      title: 'TheKeyCrypto',
+      badge: "Completed",
+      description: 'Ferramenta de criptografia e descriptografia de texto utilizando criptografia RSA - OAEP.',
+      content: '/thekeycrypto.png',
+      footer: {
+        code: {
+          tool: 'GitHub',
+          url: 'https://github.com/JudahAragao/TheKeyCrypto',
+        },
+      },
+    },
   ];
 
   const dataEducations = [
