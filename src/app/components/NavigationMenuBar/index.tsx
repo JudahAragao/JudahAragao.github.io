@@ -2,7 +2,7 @@
 
 import { Button } from "@/ui/button"
 import { HomeIcon, AvatarIcon, RocketIcon, MixIcon, BackpackIcon, CookieIcon } from '@radix-ui/react-icons'
-import { Link } from 'react-scroll';
+import { Link as ScrollLink, animateScroll as scroll } from 'react-scroll';
 
 import ModeToggle from "../Toggle"
 
@@ -11,7 +11,14 @@ export default function NavigationMenuBar() {
   return (
     <div className="flex items-center justify-between rounded-full bg-woodland-900 p-2 max-w-max">
       <div className="flex space-x-2 pr-1">
-        <Link smooth={true} duration={300} to="about">
+        <ScrollLink
+          activeClass="active"
+          to="about"
+          spy={true}
+          smooth={true}
+          duration={300}
+          // offset={-60} // Ajuste conforme necessário para o seu layout
+        >
           <Button
             className="text-zinc-100 relative rounded-full hover:bg-woodland-600 hover:text-zinc-100"
             size="icon"
@@ -20,8 +27,15 @@ export default function NavigationMenuBar() {
             <AvatarIcon className="h-6 w-6 stroke-1" />
             <span className="sr-only">About</span>
           </Button>
-        </Link>
-        <Link smooth={true} duration={300} to="projects">
+        </ScrollLink>
+        <ScrollLink
+          activeClass="active"
+          to="projects"
+          spy={true}
+          smooth={true}
+          duration={300}
+          // offset={-60} // Ajuste conforme necessário para o seu layout
+        >
           <Button
             className="text-zinc-100 rounded-full hover:bg-woodland-600 hover:text-zinc-100"
             size="icon"
@@ -30,8 +44,15 @@ export default function NavigationMenuBar() {
             <RocketIcon className="h-6 w-6 stroke-1" />
             <span className="sr-only">Projects</span>
           </Button>
-        </Link>
-        <Link smooth={true} duration={300} to="skills">
+        </ScrollLink>
+        <ScrollLink
+          activeClass="active"
+          to="skills"
+          spy={true}
+          smooth={true}
+          duration={300}
+          // offset={-60} // Ajuste conforme necessário para o seu layout
+        >
           <Button
             className="text-zinc-100 rounded-full hover:bg-woodland-600 hover:text-zinc-100"
             size="icon"
@@ -40,8 +61,15 @@ export default function NavigationMenuBar() {
             <MixIcon className="h-6 w-6 stroke-1" />
             <span className="sr-only">Skills</span>
           </Button>
-        </Link>
-        <Link smooth={true} duration={300} to="educations-works">
+        </ScrollLink>
+        <ScrollLink
+          activeClass="active"
+          to="educations-works"
+          spy={true}
+          smooth={true}
+          duration={300}
+          // offset={-60} // Ajuste conforme necessário para o seu layout
+        >
           <Button
             className="text-zinc-100 rounded-full hover:bg-woodland-600 hover:text-zinc-100"
             size="icon"
@@ -50,8 +78,15 @@ export default function NavigationMenuBar() {
             <BackpackIcon className="h-6 w-6 stroke-1" />
             <span className="sr-only">Educations And Works</span>
           </Button>
-        </Link>
-        <Link smooth={true} duration={300} to="blog">
+        </ScrollLink>
+        <ScrollLink
+          activeClass="active"
+          to="blog"
+          spy={true}
+          smooth={true}
+          duration={300}
+          // offset={-60} // Ajuste conforme necessário para o seu layout
+        >
           <Button
             className="text-zinc-100 rounded-full hover:bg-woodland-600 hover:text-zinc-100"
             size="icon"
@@ -60,10 +95,10 @@ export default function NavigationMenuBar() {
             <CookieIcon className="h-6 w-6 stroke-1" />
             <span className="sr-only">Blog</span>
           </Button>
-        </Link>
+        </ScrollLink>
         <div className="border-r border-woodland-950"></div>
         <ModeToggle />
       </div>
     </div>
-  )
+  );
 }

@@ -15,6 +15,7 @@ export default function Home() {
   const dataProjects = [
     {
       title: 'Fa Têxtil',
+      badge: "Developing",
       description:
         'Gestão de Pedidos e Fabricação para Uma Fábrica de Confecção de Fardamentos.',
       content: '/logo-projeto-portfolio.png',
@@ -31,6 +32,7 @@ export default function Home() {
     },
     {
       title: 'Controle de Toners e Cartuchos',
+      badge: "Developing",
       description: 'Controle de fluxo de recarga e uso de toner e cartuchos.',
       content: '/tonerbrother01-400x293-1.png',
       footer: {
@@ -264,7 +266,7 @@ export default function Home() {
         <section className="min-h-screen " id="skills">
           <div className="mt-16 px-3">
             <div className="">
-              <h1 className="text-2xl font-bold mb-4">Habilidades</h1>
+              <h1 className="text-2xl font-bold mb-4">Experiências / Habilidades</h1>
             </div>
 
             <div className="mt-6">
@@ -294,7 +296,7 @@ export default function Home() {
           <div className="mt-16 px-3">
             <div className="">
               <h1 className="text-2xl font-bold mb-4">
-                Formações e Experiências
+                Formações e Experiências Profissionais
               </h1>
             </div>
 

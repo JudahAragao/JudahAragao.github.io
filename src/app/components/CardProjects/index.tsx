@@ -11,9 +11,11 @@ import {
 } from '@/ui/card';
 import { Button } from '../ui/button';
 import Link from 'next/link';
+import { Badge } from '../ui/badge';
 
 type ProjectProps = {
   title: string;
+  badge: string;
   description: string;
   content: string;
   footer: {
@@ -39,7 +41,10 @@ const CardProjects = ({ dataProjects }: CardProjectsProps) => {
         return (
           <Card key={index} className="">
             <CardHeader>
-              <CardTitle>{dataProject.title}</CardTitle>
+              <div className='flex items-center gap-3'>
+                <CardTitle>{dataProject.title}</CardTitle>
+                <Badge>{dataProject.badge}</Badge>
+              </div>
               <CardDescription>{dataProject.description}</CardDescription>
             </CardHeader>
             <CardContent className="flex justify-center">

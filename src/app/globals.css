@@ -57,4 +57,9 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  .active .text-zinc-100 {
+    background-color: rgb(123 136 40 / var(--tw-bg-opacity)); /* cor para indicar que está ativo */
+    color: rgb(244 244 245 / var(--tw-text-opacity));
+  }
 }
