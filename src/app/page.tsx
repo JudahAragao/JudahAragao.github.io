@@ -216,7 +216,7 @@ export default function Home() {
                     target="_blank"
                     rel="noopener noreferrer "
                   >
-                    <LinkedInLogoIcon className="h-5 w-5 stroke-1" />
+                    <LinkedInLogoIcon className="h-5 w-5 stroke-1 hover:text-primary/80 dark:hover:text-gray-400" />
                     <span className="sr-only">LinkedIn</span>
                   </a>
                 </li>
@@ -228,7 +228,7 @@ export default function Home() {
                     target="_blank"
                     rel="noopener noreferrer "
                   >
-                    <GitHubLogoIcon className="h-5 w-5 stroke-1" />
+                    <GitHubLogoIcon className="h-5 w-5 stroke-1 hover:text-primary/80 dark:hover:text-gray-400" />
                     <span className="sr-only">GitHub</span>
                   </a>
                 </li>
@@ -252,7 +252,7 @@ export default function Home() {
                     target="_blank"
                     rel="noopener noreferrer "
                   >
-                    <InstagramLogoIcon className="h-5 w-5 stroke-1" />
+                    <InstagramLogoIcon className="h-5 w-5 stroke-1 hover:text-primary/80 dark:hover:text-gray-400" />
                     <span className="sr-only">Instagram</span>
                   </a>
                 </li>

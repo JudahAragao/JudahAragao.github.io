@@ -9,7 +9,7 @@ import ModeToggle from "../Toggle"
 export default function NavigationMenuBar() {
 
   return (
-    <div className="flex items-center justify-between rounded-full bg-woodland-900 p-2 max-w-max">
+    <div className="flex items-center justify-between rounded-full bg-primary p-2 max-w-max">
       <div className="flex space-x-2 pr-1">
         <ScrollLink
           activeClass="active"
@@ -20,7 +20,7 @@ export default function NavigationMenuBar() {
           // offset={-60} // Ajuste conforme necessário para o seu layout
         >
           <Button
-            className="text-zinc-100 relative rounded-full hover:bg-woodland-600 hover:text-zinc-100"
+            className="text-zinc-100 relative rounded-full hover:bg-slate-600 hover:text-zinc-100"
             size="icon"
             variant="ghost"
           >
@@ -37,7 +37,7 @@ export default function NavigationMenuBar() {
           // offset={-60} // Ajuste conforme necessário para o seu layout
         >
           <Button
-            className="text-zinc-100 rounded-full hover:bg-woodland-600 hover:text-zinc-100"
+            className="text-zinc-100 rounded-full hover:bg-slate-600 hover:text-zinc-100"
             size="icon"
             variant="ghost"
           >
@@ -54,7 +54,7 @@ export default function NavigationMenuBar() {
           // offset={-60} // Ajuste conforme necessário para o seu layout
         >
           <Button
-            className="text-zinc-100 rounded-full hover:bg-woodland-600 hover:text-zinc-100"
+            className="text-zinc-100 rounded-full hover:bg-slate-600 hover:text-zinc-100"
             size="icon"
             variant="ghost"
           >
@@ -71,7 +71,7 @@ export default function NavigationMenuBar() {
           // offset={-60} // Ajuste conforme necessário para o seu layout
         >
           <Button
-            className="text-zinc-100 rounded-full hover:bg-woodland-600 hover:text-zinc-100"
+            className="text-zinc-100 rounded-full hover:bg-slate-600 hover:text-zinc-100"
             size="icon"
             variant="ghost"
           >
@@ -88,7 +88,7 @@ export default function NavigationMenuBar() {
           // offset={-60} // Ajuste conforme necessário para o seu layout
         >
           <Button
-            className="text-zinc-100 rounded-full hover:bg-woodland-600 hover:text-zinc-100"
+            className="text-zinc-100 rounded-full hover:bg-slate-600 hover:text-zinc-100"
             size="icon"
             variant="ghost"
           >
@@ -96,7 +96,7 @@ export default function NavigationMenuBar() {
             <span className="sr-only">Blog</span>
           </Button>
         </ScrollLink>
-        <div className="border-r border-woodland-950"></div>
+        <div className="border-r border-neutral-950"></div>
         <ModeToggle />
       </div>
     </div>

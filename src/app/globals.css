@@ -3,48 +3,50 @@
 @tailwind utilities;
 
 @layer base {
-  :root  {
-    --background: 70 100% 95%;
-    --foreground: 70 40% 20%;
-    --card: 70 50% 90%;
-    --card-foreground: 70 5% 15%;
-    --popover: 70 100% 95%;
-    --popover-foreground: 70 100% 10%;
-    --primary: 70 32.1% 22%;
+
+  :root {
+    --background: 201 100% 95%;
+    --foreground: 201 5% 0%;
+    --card: 201 50% 90%;
+    --card-foreground: 201 5% 10%;
+    --popover: 201 100% 95%;
+    --popover-foreground: 201 100% 0%;
+    --primary: 201 32.1% 10.4%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 70 30% 81%;
+    --secondary: 201 30% 70%;
     --secondary-foreground: 0 0% 0%;
-    --muted: 32 30% 85%;
-    --muted-foreground: 70 5% 40%;
-    --accent: 32 30% 81%;
-    --accent-foreground: 70 5% 15%;
-    --destructive: 0 100% 50%;
-    --destructive-foreground: 70 5% 90%;
-    --border: 70 30% 81%;
-    --input: 70 30% 50%;
-    --ring: 70 32.1% 22%;
+    --muted: 163 30% 85%;
+    --muted-foreground: 201 5% 35%;
+    --accent: 163 30% 80%;
+    --accent-foreground: 201 5% 10%;
+    --destructive: 0 100% 30%;
+    --destructive-foreground: 201 5% 90%;
+    --border: 201 30% 50%;
+    --input: 201 30% 18%;
+    --ring: 201 32.1% 10.4%;
     --radius: 0.5rem;
   }
-  .dark  {
-    --background: 70 50% 10%;
-    --foreground: 70 5% 90%;
-    --card: 70 50% 10%;
-    --card-foreground: 70 5% 90%;
-    --popover: 70 50% 5%;
-    --popover-foreground: 70 5% 90%;
-    --primary: 70 32.1% 22%;
+
+  .dark {
+    --background: 201 50% 5%;
+    --foreground: 201 5% 90%;
+    --card: 201 50% 0%;
+    --card-foreground: 201 5% 90%;
+    --popover: 201 50% 5%;
+    --popover-foreground: 201 5% 90%;
+    --primary: 201 32.1% 10.4%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 70 30% 20%;
+    --secondary: 201 30% 10%;
     --secondary-foreground: 0 0% 100%;
-    --muted: 32 30% 25%;
-    --muted-foreground: 70 5% 65%;
-    --accent: 32 30% 25%;
-    --accent-foreground: 70 5% 90%;
-    --destructive: 0 100% 50%;
-    --destructive-foreground: 70 5% 90%;
-    --border: 70 30% 50%;
-    --input: 70 30% 50%;
-    --ring: 70 32.1% 22%;
+    --muted: 163 30% 15%;
+    --muted-foreground: 201 5% 60%;
+    --accent: 163 30% 15%;
+    --accent-foreground: 201 5% 90%;
+    --destructive: 0 100% 30%;
+    --destructive-foreground: 201 5% 90%;
+    --border: 201 30% 18%;
+    --input: 201 30% 18%;
+    --ring: 201 32.1% 10.4%;
     --radius: 0.5rem;
   }
 }
@@ -59,7 +61,8 @@
   }
 
   .active .text-zinc-100 {
-    background-color: rgb(123 136 40 / var(--tw-bg-opacity)); /* cor para indicar que está ativo */
+    background-color: #475569;
+    /* cor para indicar que está ativo */
     color: rgb(244 244 245 / var(--tw-text-opacity));
   }
 }
