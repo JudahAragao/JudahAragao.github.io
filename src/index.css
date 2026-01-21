@@ -1,0 +1,175 @@
+@import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Kindle-inspired minimalist design system */
+
+@layer base {
+  :root {
+    /* Light theme - warm paper tones inspired by Kindle */
+    --background: 40 30% 98%;
+    --foreground: 30 10% 12%;
+
+    --card: 40 25% 96%;
+    --card-foreground: 30 10% 12%;
+
+    --popover: 40 30% 98%;
+    --popover-foreground: 30 10% 12%;
+
+    --primary: 30 10% 12%;
+    --primary-foreground: 40 30% 98%;
+
+    --secondary: 35 20% 92%;
+    --secondary-foreground: 30 10% 20%;
+
+    --muted: 35 15% 90%;
+    --muted-foreground: 30 8% 45%;
+
+    --accent: 25 80% 50%;
+    --accent-foreground: 40 30% 98%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 35 15% 88%;
+    --input: 35 15% 88%;
+    --ring: 25 80% 50%;
+
+    --radius: 0.375rem;
+
+    /* Custom tokens */
+    --hero-gradient: linear-gradient(180deg, hsl(40 30% 98%) 0%, hsl(35 20% 94%) 100%);
+    --text-heading: 30 15% 8%;
+    --text-body: 30 8% 25%;
+    --text-muted: 30 6% 50%;
+    --accent-warm: 25 80% 50%;
+    --accent-warm-light: 25 80% 95%;
+    --surface-elevated: 40 25% 99%;
+    --divider: 35 12% 85%;
+
+    --sidebar-background: 40 25% 96%;
+    --sidebar-foreground: 30 10% 20%;
+    --sidebar-primary: 30 10% 12%;
+    --sidebar-primary-foreground: 40 30% 98%;
+    --sidebar-accent: 35 20% 92%;
+    --sidebar-accent-foreground: 30 10% 20%;
+    --sidebar-border: 35 15% 88%;
+    --sidebar-ring: 25 80% 50%;
+  }
+
+  .dark {
+    /* Dark theme - deep Kindle night mode */
+    --background: 30 10% 6%;
+    --foreground: 35 15% 90%;
+
+    --card: 30 10% 9%;
+    --card-foreground: 35 15% 90%;
+
+    --popover: 30 10% 8%;
+    --popover-foreground: 35 15% 90%;
+
+    --primary: 35 15% 90%;
+    --primary-foreground: 30 10% 6%;
+
+    --secondary: 30 8% 14%;
+    --secondary-foreground: 35 15% 85%;
+
+    --muted: 30 8% 16%;
+    --muted-foreground: 30 6% 55%;
+
+    --accent: 30 75% 55%;
+    --accent-foreground: 30 10% 6%;
+
+    --destructive: 0 62% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 30 8% 18%;
+    --input: 30 8% 18%;
+    --ring: 30 75% 55%;
+
+    /* Custom tokens - dark */
+    --hero-gradient: linear-gradient(180deg, hsl(30 10% 6%) 0%, hsl(30 10% 8%) 100%);
+    --text-heading: 35 15% 92%;
+    --text-body: 35 10% 75%;
+    --text-muted: 30 6% 50%;
+    --accent-warm: 30 75% 55%;
+    --accent-warm-light: 30 50% 15%;
+    --surface-elevated: 30 10% 10%;
+    --divider: 30 8% 20%;
+
+    --sidebar-background: 30 10% 8%;
+    --sidebar-foreground: 35 15% 85%;
+    --sidebar-primary: 30 75% 55%;
+    --sidebar-primary-foreground: 30 10% 6%;
+    --sidebar-accent: 30 8% 14%;
+    --sidebar-accent-foreground: 35 15% 85%;
+    --sidebar-border: 30 8% 18%;
+    --sidebar-ring: 30 75% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Inter', sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Crimson Pro', serif;
+    @apply text-heading tracking-tight;
+  }
+}
+
+@layer utilities {
+  .text-heading {
+    color: hsl(var(--text-heading));
+  }
+
+  .text-body {
+    color: hsl(var(--text-body));
+  }
+
+  .text-subtle {
+    color: hsl(var(--text-muted));
+  }
+
+  .bg-hero-gradient {
+    background: var(--hero-gradient);
+  }
+
+  .bg-surface-elevated {
+    background-color: hsl(var(--surface-elevated));
+  }
+
+  .border-divider {
+    border-color: hsl(var(--divider));
+  }
+
+  .accent-warm {
+    color: hsl(var(--accent-warm));
+  }
+
+  .bg-accent-warm-light {
+    background-color: hsl(var(--accent-warm-light));
+  }
+
+  /* Kindle-style reading progress line */
+  .kindle-line {
+    @apply h-px bg-gradient-to-r from-transparent via-border to-transparent;
+  }
+
+  /* Smooth transitions for theme switching */
+  .theme-transition {
+    @apply transition-colors duration-300 ease-in-out;
+  }
+}
