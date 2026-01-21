@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { z } from "zod";
 import { Send, CheckCircle, AlertCircle } from "lucide-react";
-import { Turnstile } from '@marsidev/react-turnstile';
 import { api } from "@/lib/api";
 
 const contactSchema = z.object({
@@ -28,7 +27,6 @@ type ContactFormData = z.infer<typeof contactSchema>;
 type FormStatus = "idle" | "sending" | "success" | "error";
 
 export function ContactForm() {
-  const [token, setToken] = useState<string | null>(null);
   const [formData, setFormData] = useState<ContactFormData>({
     name: "",
     email: "",
@@ -50,12 +48,6 @@ export function ContactForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (!token) {
-      alert('Verificação pendente...');
-      return;
-    }
-
     setErrors({});
     
     const result = contactSchema.safeParse(formData);
@@ -71,10 +63,7 @@ export function ContactForm() {
 
     setStatus("sending");
     try {
-      await api.post("contact", {
-        ...result.data,
-        "cf-turnstile-response": token,
-      });
+      await api.post("contact", result.data);
       setStatus("success");
       setFeedbackMessage("Mensagem enviada com sucesso! Obrigado pelo contato.");
       setFormData({ name: "", email: "", message: "" });
@@ -184,41 +173,9 @@ export function ContactForm() {
         </p>
       </div>
 
-      <div className="mt-6">
-        <Turnstile
-          siteKey={import.meta.env.VITE_TURNSTILE_SITE_KEY}  // ← cole a Site Key do dashboard Cloudflare
-          onSuccess={(tokenGenerated) => {
-            setToken(tokenGenerated);  // ← salva o token quando o challenge passa
-            console.log("Turnstile token gerado:", tokenGenerated);
-          }}
-          onError={(error) => {
-            console.error("Turnstile error:", error);
-            setToken(null); // opcional: reseta se der erro
-          }}
-          onExpire={() => {
-            setToken(null); // token expira após ~5 min, força nova verificação
-            console.warn("Turnstile token expirou");
-          }}
-          options={{
-            theme: "auto",  // auto = detecta light/dark baseado no seu CSS (melhor UX)
-            // size: "compact", // se o widget parecer grande demais no mobile
-            // execution: "execute", // default: roda challenge imediatamente; "render" roda só quando chamado via ref
-          }}
-          // execution="execute" // default, roda logo; ou "render" para rodar só no submit
-          // size="normal"       // "normal" | "compact" | "invisible" (se quiser sem nada visível)
-        />
-      </div>
-
-      {/* Feedback visual opcional se token ainda não gerado */}
-      {!token && status === "idle" && (
-        <p className="mt-2 text-xs text-subtle text-center">
-          Verificando se você é humano... (pode demorar 1-2s)
-        </p>
-      )}
-
       <button
         type="submit"
-        disabled={status === "sending" || !token}
+        disabled={status === "sending"}
         className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-heading text-background rounded-lg font-medium hover:opacity-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {status === "sending" ? (
