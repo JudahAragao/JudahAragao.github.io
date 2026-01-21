@@ -5,6 +5,7 @@ import { ArticleHeader } from "@/components/ArticleHeader";
 import { ArticleContent } from "@/components/ArticleContent";
 import { ArticleFooter } from "@/components/ArticleFooter";
 import { api } from "@/lib/api";
+import hljs from 'highlight.js';
 
 // Types for the API response
 interface Category {
@@ -70,7 +71,35 @@ const serializeBlocks = (blocks: any[]): string => {
     
     // Handle Code Block
     if (block.code) {
-      return `<pre class="bg-secondary p-4 rounded-lg overflow-x-auto my-4"><code class="text-sm font-mono">${block.code}</code></pre>`;
+      let language = (block.language || 'typescript').toLowerCase();
+      
+      // Map friendly names to highlight.js keys if necessary
+      const languageMap: Record<string, string> = {
+        'html': 'xml',
+        'js': 'javascript',
+        'ts': 'typescript',
+        'py': 'python',
+        'sh': 'bash',
+        'shell': 'bash'
+      };
+      
+      if (languageMap[language]) {
+        language = languageMap[language];
+      }
+
+      let highlightedCode = block.code;
+      
+      try {
+        if (hljs.getLanguage(language)) {
+          highlightedCode = hljs.highlight(block.code, { language }).value;
+        } else {
+          highlightedCode = hljs.highlightAuto(block.code).value;
+        }
+      } catch (error) {
+        console.error("Highlighting failed:", error);
+      }
+
+      return `<pre class="bg-[#282c34] p-4 rounded-lg overflow-x-auto my-4"><code class="hljs language-${language} text-sm font-mono">${highlightedCode}</code></pre>`;
     }
     
     return "";
