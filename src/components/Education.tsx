@@ -108,9 +108,13 @@ export function Education() {
             ))}
           </div>
           
-          <h3 className="font-serif text-2xl text-heading mb-6">
-            Certificações
-          </h3>
+          {
+            data.certifications && data.certifications.length > 0 && (
+              <h3 className="font-serif text-2xl text-heading mb-6">
+                Certificações
+              </h3>
+            )
+          }
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {data.certifications.map((cert) => (
