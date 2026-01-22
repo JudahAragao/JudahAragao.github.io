@@ -41,15 +41,15 @@ const serializeLexical = (nodes: any[]): string => {
     switch (node.type) {
       case "heading":
         const headingSizes: Record<string, string> = {
-          h1: "text-4xl",
-          h2: "text-3xl",
-          h3: "text-2xl",
-          h4: "text-xl",
-          h5: "text-lg",
-          h6: "text-base"
+          h1: "text-3xl",
+          h2: "text-2xl",
+          h3: "text-xl",
+          h4: "text-lg",
+          h5: "text-base",
+          h6: "text-sm"
         };
-        const sizeClass = headingSizes[node.tag] || "text-xl";
-        return `<${node.tag} class="${sizeClass} font-serif text-heading mt-6 mb-3">${children}</${node.tag}>`;
+        const sizeClass = headingSizes[node.tag] || "text-lg";
+        return `<${node.tag} class="${sizeClass} font-serif text-heading mt-6 mb-3 font-semibold">${children}</${node.tag}>`;
       case "paragraph":
         return `<p class="text-body mb-4 leading-relaxed">${children}</p>`;
       case "list":
