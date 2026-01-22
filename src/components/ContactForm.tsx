@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { z } from "zod";
 import { Send, CheckCircle, AlertCircle } from "lucide-react";
-import { api } from "@/lib/api";
+import { useContactMutation } from "@/hooks/queries";
 
 const contactSchema = z.object({
   name: z
@@ -35,6 +35,8 @@ export function ContactForm() {
   const [errors, setErrors] = useState<Partial<Record<keyof ContactFormData, string>>>({});
   const [status, setStatus] = useState<FormStatus>("idle");
   const [feedbackMessage, setFeedbackMessage] = useState("");
+  
+  const contactMutation = useContactMutation();
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -63,7 +65,7 @@ export function ContactForm() {
 
     setStatus("sending");
     try {
-      await api.post("contact", result.data);
+      await contactMutation.mutateAsync(result.data);
       setStatus("success");
       setFeedbackMessage("Mensagem enviada com sucesso! Obrigado pelo contato.");
       setFormData({ name: "", email: "", message: "" });

@@ -1,43 +1,10 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, Clock } from "lucide-react";
-import { useEffect, useState } from "react";
-import { api } from "@/lib/api";
-
-interface Category {
-  id: number;
-  title: string;
-  slug: string;
-}
-
-interface Post {
-  id: number;
-  title: string;
-  slug: string;
-  description: string;
-  category: Category;
-  readTime?: string;
-  publishedDate: string;
-}
+import { usePosts } from "@/hooks/queries";
 
 export function Blog() {
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    async function fetchPosts() {
-      try {
-        const response = await api.get<{ docs: Post[] }>("posts?limit=4");
-        if (response.docs) {
-          setPosts(response.docs);
-        }
-      } catch (error) {
-        console.error("Failed to fetch posts for homepage:", error);
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchPosts();
-  }, []);
+  const { data: postsData, isLoading } = usePosts({ limit: 4 });
+  const posts = postsData?.docs || [];
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("pt-BR", {
@@ -69,7 +36,7 @@ export function Blog() {
             </Link>
           </div>
 
-          {loading ? (
+          {isLoading ? (
             <div className="space-y-6 animate-pulse">
               {[1, 2, 3].map((i) => (
                 <div key={i} className="h-32 w-full bg-secondary/50 rounded-lg"></div>

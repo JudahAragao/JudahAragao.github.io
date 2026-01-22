@@ -1,51 +1,10 @@
 import { GraduationCap, Award } from "lucide-react";
-import { useEffect, useState } from "react";
-import { api } from "@/lib/api";
-
-interface EducationItem {
-  id: string;
-  title: string;
-  institution: string;
-  period: string;
-  description: string;
-}
-
-interface CertificationItem {
-  id: string;
-  title: string;
-  year: number;
-  issuer: string | null;
-}
-
-interface EducationData {
-  id: number;
-  sectionTitle: string;
-  sectionDescription: string;
-  education: EducationItem[];
-  certifications: CertificationItem[];
-}
+import { useEducation } from "@/hooks/queries";
 
 export function Education() {
-  const [data, setData] = useState<EducationData | null>(null);
-  const [loading, setLoading] = useState(true);
+  const { data, isLoading } = useEducation();
 
-  useEffect(() => {
-    async function fetchEducation() {
-      try {
-        const response = await api.get<{ docs: EducationData[] }>("education");
-        if (response.docs && response.docs.length > 0) {
-          setData(response.docs[0]);
-        }
-      } catch (error) {
-        console.error("Failed to fetch education data:", error);
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchEducation();
-  }, []);
-
-  if (loading) {
+  if (isLoading) {
     return (
       <section id="education" className="py-24 bg-secondary/30 theme-transition">
         <div className="container mx-auto px-6">

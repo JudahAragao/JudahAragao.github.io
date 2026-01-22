@@ -1,49 +1,10 @@
 import { ExternalLink, Github } from "lucide-react";
-import { useEffect, useState } from "react";
-import { api } from "@/lib/api";
-
-interface Technology {
-  id: string;
-  name: string;
-}
-
-interface Project {
-  id: string;
-  title: string;
-  description: string;
-  githubUrl: string | null;
-  projectUrl: string | null;
-  technologies: Technology[];
-}
-
-interface ProjectsSection {
-  id: number;
-  sectionTitle: string;
-  sectionDescription: string;
-  projects: Project[];
-}
+import { useProjects } from "@/hooks/queries";
 
 export function Projects() {
-  const [data, setData] = useState<ProjectsSection | null>(null);
-  const [loading, setLoading] = useState(true);
+  const { data, isLoading } = useProjects();
 
-  useEffect(() => {
-    async function fetchProjects() {
-      try {
-        const response = await api.get<{ docs: ProjectsSection[] }>("projects");
-        if (response.docs && response.docs.length > 0) {
-          setData(response.docs[0]);
-        }
-      } catch (error) {
-        console.error("Failed to fetch projects data:", error);
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchProjects();
-  }, []);
-
-  if (loading) {
+  if (isLoading) {
     return (
       <section id="projects" className="py-24 bg-secondary/30 theme-transition">
         <div className="container mx-auto px-6">

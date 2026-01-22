@@ -1,39 +1,11 @@
 import { Github, Linkedin, Twitter, Mail } from "lucide-react";
-import { useEffect, useState } from "react";
 import { ContactForm } from "./ContactForm";
-import { api } from "@/lib/api";
-
-interface FooterData {
-  id: number;
-  sectionTitle: string;
-  sectionDescription: string;
-  "link-github": string | null;
-  "link-linkedin": string | null;
-  "link-x": string | null;
-  "link-email": string | null;
-}
+import { useFooter } from "@/hooks/queries";
 
 export function Footer() {
-  const [data, setData] = useState<FooterData | null>(null);
-  const [loading, setLoading] = useState(true);
+  const { data, isLoading } = useFooter();
 
-  useEffect(() => {
-    async function fetchFooter() {
-      try {
-        const response = await api.get<{ docs: FooterData[] }>("footer");
-        if (response.docs && response.docs.length > 0) {
-          setData(response.docs[0]);
-        }
-      } catch (error) {
-        console.error("Failed to fetch footer data:", error);
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchFooter();
-  }, []);
-
-  if (loading) {
+  if (isLoading) {
     return (
       <footer id="contact" className="py-16 bg-secondary/50 theme-transition">
         <div className="container mx-auto px-6">

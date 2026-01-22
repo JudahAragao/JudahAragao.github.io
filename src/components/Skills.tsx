@@ -1,45 +1,9 @@
-import { useEffect, useState } from "react";
-import { api } from "@/lib/api";
-
-interface Technology {
-  id: string;
-  name: string;
-}
-
-interface TechnologyGroup {
-  id: string;
-  groupName: string;
-  technologies: Technology[];
-}
-
-interface SkillsData {
-  id: number;
-  sectionTitle: string;
-  sectionDescription: string;
-  technologyGroups: TechnologyGroup[];
-}
+import { useSkills } from "@/hooks/queries";
 
 export function Skills() {
-  const [data, setData] = useState<SkillsData | null>(null);
-  const [loading, setLoading] = useState(true);
+  const { data, isLoading } = useSkills();
 
-  useEffect(() => {
-    async function fetchSkills() {
-      try {
-        const response = await api.get<{ docs: SkillsData[] }>("skills");
-        if (response.docs && response.docs.length > 0) {
-          setData(response.docs[0]);
-        }
-      } catch (error) {
-        console.error("Failed to fetch skills data:", error);
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchSkills();
-  }, []);
-
-  if (loading) {
+  if (isLoading) {
     return (
       <section id="skills" className="py-24 bg-background theme-transition">
         <div className="container mx-auto px-6">

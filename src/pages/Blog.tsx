@@ -3,104 +3,42 @@ import { Link } from "react-router-dom";
 import { Clock, Search, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { ArticleHeaderBar } from "@/components/ArticleHeaderBar";
 import { Footer } from "@/components/Footer";
-import { api } from "@/lib/api";
-
-interface Category {
-  id: number | string;
-  title: string;
-  slug: string;
-}
-
-interface Post {
-  id: number;
-  title: string;
-  slug: string;
-  description: string;
-  category: Category;
-  readTime?: string;
-  publishedDate: string;
-  featured?: boolean;
-}
-
-interface PaginatedResponse<T> {
-  docs: T[];
-  hasNextPage: boolean;
-  hasPrevPage: boolean;
-  limit: number;
-  nextPage: number | null;
-  page: number;
-  pagingCounter: number;
-  prevPage: number | null;
-  totalDocs: number;
-  totalPages: number;
-}
+import { usePosts, useCategories } from "@/hooks/queries";
 
 export default function BlogPage() {
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [categories, setCategories] = useState<Category[]>([
-    { id: "all", title: "Todos", slug: "todos" }
-  ]);
-  const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("todos");
-  
-  // Pagination State
   const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  const [hasNextPage, setHasNextPage] = useState(false);
-  const [hasPrevPage, setHasPrevPage] = useState(false);
 
   // Fetch Categories
-  useEffect(() => {
-    async function fetchCategories() {
-      try {
-        const response = await api.get<{ docs: Category[] }>("categories");
-        if (response.docs) {
-          setCategories([
-            { id: "all", title: "Todos", slug: "todos" },
-            ...response.docs
-          ]);
-        }
-      } catch (error) {
-        console.error("Failed to fetch categories:", error);
-      }
-    }
-    fetchCategories();
-  }, []);
+  const { data: categoriesData = [] } = useCategories();
+  
+  const categories = [
+    { id: "all", title: "Todos", slug: "todos" },
+    ...categoriesData
+  ];
 
   // Fetch Posts
-  useEffect(() => {
-    async function fetchPosts() {
-      setLoading(true);
-      try {
-        let endpoint = `posts?page=${page}`;
-        if (selectedCategory !== "todos") {
-          endpoint = `posts?where[category.slug][equals]=${selectedCategory}&page=${page}`;
-        }
+  const { 
+    data: postsData, 
+    isLoading, 
+    isError 
+  } = usePosts({ 
+    page, 
+    category: selectedCategory 
+  });
 
-        const response = await api.get<PaginatedResponse<Post>>(endpoint);
-        if (response.docs) {
-          setPosts(response.docs);
-          setTotalPages(response.totalPages);
-          setHasNextPage(response.hasNextPage);
-          setHasPrevPage(response.hasPrevPage);
-        }
-      } catch (error) {
-        console.error("Failed to fetch posts:", error);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchPosts();
-  }, [selectedCategory, page]);
+  const posts = postsData?.docs || [];
+  const totalPages = postsData?.totalPages || 1;
+  const hasNextPage = postsData?.hasNextPage || false;
+  const hasPrevPage = postsData?.hasPrevPage || false;
 
   // Reset page when filters change
   useEffect(() => {
     setPage(1);
   }, [selectedCategory, searchQuery]);
 
-  // Client-side search filtering (Note: Ideally search should be server-side too for proper pagination)
+  // Client-side search filtering
   const filteredPosts = posts.filter((post) =>
     post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
     post.description?.toLowerCase().includes(searchQuery.toLowerCase())
@@ -180,11 +118,15 @@ export default function BlogPage() {
               </div>
             </div>
 
-            {loading ? (
+            {isLoading ? (
               <div className="space-y-6 animate-pulse">
                 {[1, 2, 3].map((i) => (
                    <div key={i} className="h-40 w-full bg-secondary/50 rounded-lg"></div>
                 ))}
+              </div>
+            ) : isError ? (
+              <div className="text-center py-16 text-red-500">
+                <p>Erro ao carregar artigos. Tente novamente mais tarde.</p>
               </div>
             ) : (
               <>

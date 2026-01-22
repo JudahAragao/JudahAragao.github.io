@@ -1,27 +1,11 @@
-import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { ArticleHeaderBar } from "@/components/ArticleHeaderBar";
 import { ArticleHeader } from "@/components/ArticleHeader";
 import { ArticleContent } from "@/components/ArticleContent";
 import { ArticleFooter } from "@/components/ArticleFooter";
-import { api } from "@/lib/api";
+import { useArticle } from "@/hooks/queries";
 import { CodeBlock } from "@/components/ui/code-block";
 import { SafeHtml } from "@/components/ui/safe-html";
-
-// Types for the API response
-interface Category {
-  title: string;
-}
-
-interface Post {
-  id: number;
-  title: string;
-  category: Category;
-  readTime?: string;
-  publishedDate: string;
-  author?: string; // API might not return this yet, optional
-  content: any[]; // PayloadCMS blocks
-}
 
 // Simple serializer for Lexical nodes
 const serializeLexical = (nodes: any[]): string => {
@@ -103,30 +87,9 @@ const renderBlocks = (blocks: any[]) => {
 
 export default function ArticlePage() {
   const { slug } = useParams();
-  const [article, setArticle] = useState<Post | null>(null);
-  const [loading, setLoading] = useState(true);
+  const { data: article, isLoading } = useArticle(slug);
 
-  useEffect(() => {
-    async function fetchArticle() {
-      if (!slug) return;
-      
-      setLoading(true);
-      try {
-        const response = await api.get<{ docs: Post[] }>(`posts?where[slug][equals]=${slug}`);
-        if (response.docs && response.docs.length > 0) {
-          setArticle(response.docs[0]);
-        }
-      } catch (error) {
-        console.error("Failed to fetch article:", error);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchArticle();
-  }, [slug]);
-
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="min-h-screen bg-background theme-transition flex items-center justify-center">
         <div className="text-center animate-pulse">
@@ -154,7 +117,7 @@ export default function ArticlePage() {
     year: "numeric"
   });
 
-  const contentNodes = renderBlocks(article.content);
+  const contentNodes = renderBlocks(article.content || []);
 
   return (
     <div className="min-h-screen bg-background theme-transition">

@@ -1,37 +1,11 @@
 import { Download, ArrowDown } from "lucide-react";
-import { useEffect, useState } from "react";
-import { api } from "@/lib/api";
+import { useHero } from "@/hooks/queries";
 import { SafeHtml } from "@/components/ui/safe-html";
 
-interface HeroData {
-  id: number;
-  greeting: string;
-  name: string;
-  description: string;
-  "link-curriculum": string;
-}
-
 export function Hero() {
-  const [data, setData] = useState<HeroData | null>(null);
-  const [loading, setLoading] = useState(true);
+  const { data, isLoading } = useHero();
 
-  useEffect(() => {
-    async function fetchHero() {
-      try {
-        const response = await api.get<{ docs: HeroData[] }>("hero");
-        if (response.docs && response.docs.length > 0) {
-          setData(response.docs[0]);
-        }
-      } catch (error) {
-        console.error("Failed to fetch hero data:", error);
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchHero();
-  }, []);
-
-  if (loading) {
+  if (isLoading) {
     return (
       <section className="min-h-screen flex items-center justify-center bg-hero-gradient theme-transition pt-20">
         <div className="animate-pulse flex flex-col items-center">
