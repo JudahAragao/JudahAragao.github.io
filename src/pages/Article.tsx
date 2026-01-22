@@ -5,7 +5,8 @@ import { ArticleHeader } from "@/components/ArticleHeader";
 import { ArticleContent } from "@/components/ArticleContent";
 import { ArticleFooter } from "@/components/ArticleFooter";
 import { api } from "@/lib/api";
-import hljs from 'highlight.js';
+import { CodeBlock } from "@/components/ui/code-block";
+import { SafeHtml } from "@/components/ui/safe-html";
 
 // Types for the API response
 interface Category {
@@ -68,51 +69,36 @@ const serializeLexical = (nodes: any[]): string => {
   }).join("");
 };
 
-// Serializer for the top-level blocks
-const serializeBlocks = (blocks: any[]): string => {
-  if (!blocks) return "";
+// Render blocks to React Nodes
+const renderBlocks = (blocks: any[]) => {
+  if (!blocks) return null;
   
-  return blocks.map((block) => {
+  return blocks.map((block, index) => {
     // Handle Text Block (Lexical)
     if (block.text && block.text.root && block.text.root.children) {
-      return serializeLexical(block.text.root.children);
+      const html = serializeLexical(block.text.root.children);
+      return (
+        <SafeHtml 
+          key={index} 
+          html={html} 
+          className="prose-lg prose-headings:font-serif prose-headings:text-heading prose-p:text-body prose-a:text-warm hover:prose-a:underline prose-blockquote:border-warm prose-blockquote:italic marker:text-foreground"
+        />
+      );
     }
     
     // Handle Code Block
     if (block.code) {
-      let language = (block.language || 'typescript').toLowerCase();
-      
-      // Map friendly names to highlight.js keys if necessary
-      const languageMap: Record<string, string> = {
-        'html': 'xml',
-        'js': 'javascript',
-        'ts': 'typescript',
-        'py': 'python',
-        'sh': 'bash',
-        'shell': 'bash'
-      };
-      
-      if (languageMap[language]) {
-        language = languageMap[language];
-      }
-
-      let highlightedCode = block.code;
-      
-      try {
-        if (hljs.getLanguage(language)) {
-          highlightedCode = hljs.highlight(block.code, { language }).value;
-        } else {
-          highlightedCode = hljs.highlightAuto(block.code).value;
-        }
-      } catch (error) {
-        console.error("Highlighting failed:", error);
-      }
-
-      return `<pre class="bg-[#282c34] p-4 rounded-lg overflow-x-auto my-4"><code class="hljs language-${language} text-sm font-mono">${highlightedCode}</code></pre>`;
+      return (
+        <CodeBlock 
+          key={index}
+          code={block.code} 
+          language={block.language} 
+        />
+      );
     }
     
-    return "";
-  }).join("");
+    return null;
+  });
 };
 
 export default function ArticlePage() {
@@ -168,7 +154,7 @@ export default function ArticlePage() {
     year: "numeric"
   });
 
-  const htmlContent = serializeBlocks(article.content);
+  const contentNodes = renderBlocks(article.content);
 
   return (
     <div className="min-h-screen bg-background theme-transition">
@@ -185,7 +171,7 @@ export default function ArticlePage() {
               date={formattedDate}
             />
             
-            <ArticleContent content={htmlContent} />
+            <ArticleContent content={contentNodes} />
             
             <ArticleFooter />
           </article>
