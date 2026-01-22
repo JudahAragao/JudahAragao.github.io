@@ -7,7 +7,16 @@ import Index from "./pages/Index";
 import BlogPage from "./pages/Blog";
 import ArticlePage from "./pages/Article";
 import NotFound from "./pages/NotFound";
-const queryClient = new QueryClient();
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false, // Fail immediately on error instead of retrying 3 times
+      refetchOnWindowFocus: false, // Don't refetch when switching tabs
+    },
+  },
+});
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
@@ -25,4 +34,5 @@ const App = () => (
     </TooltipProvider>
   </QueryClientProvider>
 );
+
 export default App;
