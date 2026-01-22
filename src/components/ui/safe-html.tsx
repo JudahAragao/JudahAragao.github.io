@@ -20,7 +20,7 @@ export function SafeHtml({ html, className, as: Component = 'div', ...props }: S
 
   return (
     <Component
-      className={cn("prose sm:prose-base dark:prose-invert max-w-none", className)}
+      className={cn("prose dark:prose-invert max-w-none", className)}
       dangerouslySetInnerHTML={sanitizedHtml}
       {...props}
     />
