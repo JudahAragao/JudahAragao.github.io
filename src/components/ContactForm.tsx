@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { z } from "zod";
 import { Send, CheckCircle, AlertCircle } from "lucide-react";
 import { useContactMutation } from "@/hooks/queries";
+import { Turnstile, TurnstileInstance } from "@marsidev/react-turnstile";
 
 const contactSchema = z.object({
   name: z
@@ -26,16 +27,20 @@ type ContactFormData = z.infer<typeof contactSchema>;
 
 type FormStatus = "idle" | "sending" | "success" | "error";
 
+const COOLDOWN_TIME = 60 * 1000; // 60 seconds
+
 export function ContactForm() {
   const [formData, setFormData] = useState<ContactFormData>({
     name: "",
     email: "",
     message: "",
   });
+  const [token, setToken] = useState<string | null>(null);
   const [errors, setErrors] = useState<Partial<Record<keyof ContactFormData, string>>>({});
   const [status, setStatus] = useState<FormStatus>("idle");
   const [feedbackMessage, setFeedbackMessage] = useState("");
   
+  const turnstileRef = useRef<TurnstileInstance>(null);
   const contactMutation = useContactMutation();
 
   const handleChange = (
@@ -52,6 +57,25 @@ export function ContactForm() {
     e.preventDefault();
     setErrors({});
     
+    // 1. Rate Limiting Check (Frontend Level)
+    const lastSent = localStorage.getItem("lastContactSent");
+    if (lastSent) {
+      const timeSinceLast = Date.now() - Number(lastSent);
+      if (timeSinceLast < COOLDOWN_TIME) {
+        const remainingSeconds = Math.ceil((COOLDOWN_TIME - timeSinceLast) / 1000);
+        setStatus("error");
+        setFeedbackMessage(`Por favor, aguarde ${remainingSeconds} segundos antes de enviar outra mensagem.`);
+        return;
+      }
+    }
+
+    // 2. Captcha Validation
+    if (!token) {
+      setStatus("error");
+      setFeedbackMessage("Por favor, complete o desafio de segurança (Captcha) abaixo.");
+      return;
+    }
+    
     const result = contactSchema.safeParse(formData);
     if (!result.success) {
       const fieldErrors: Partial<Record<keyof ContactFormData, string>> = {};
@@ -65,14 +89,28 @@ export function ContactForm() {
 
     setStatus("sending");
     try {
-      await contactMutation.mutateAsync(result.data);
+      // Include the Turnstile token in the payload
+      await contactMutation.mutateAsync({
+        ...result.data,
+        token: token
+      });
+      
+      // 3. Set Timestamp and Reset Form on Success
+      localStorage.setItem("lastContactSent", Date.now().toString());
+      
       setStatus("success");
       setFeedbackMessage("Mensagem enviada com sucesso! Obrigado pelo contato.");
       setFormData({ name: "", email: "", message: "" });
+      setToken(null);
+      turnstileRef.current?.reset();
+      
     } catch (error) {
       setStatus("error");
       setFeedbackMessage("Ocorreu um erro ao enviar a mensagem. Tente novamente mais tarde.");
       console.error("Failed to send contact form:", error);
+      // Optional: Reset captcha on error too, to force a fresh token
+      turnstileRef.current?.reset();
+      setToken(null);
     }
   };
 
@@ -85,14 +123,14 @@ export function ContactForm() {
           <AlertCircle className="w-12 h-12 text-red-500 mb-4" />
         )}
         <p className="text-heading font-medium mb-2">
-          {status === "success" ? "Enviado!" : "Erro!"}
+          {status === "success" ? "Enviado!" : "Atenção!"}
         </p>
         <p className="text-body text-sm mb-6">{feedbackMessage}</p>
         <button 
           onClick={() => setStatus("idle")}
           className="px-4 py-2 text-sm bg-secondary rounded-lg hover:opacity-90"
         >
-          Enviar outra mensagem
+          {status === "success" ? "Enviar outra mensagem" : "Tentar novamente"}
         </button>
       </div>
     );
@@ -173,6 +211,19 @@ export function ContactForm() {
         <p className="mt-1 text-xs text-subtle text-right">
           {formData.message.length}/1000
         </p>
+      </div>
+
+      {/* Cloudflare Turnstile Widget */}
+      <div className="flex justify-center my-4 min-h-[65px]">
+        <Turnstile
+          ref={turnstileRef}
+          siteKey={import.meta.env.VITE_TURNSTILE_SITE_KEY || ""}
+          onSuccess={(token) => setToken(token)}
+          options={{
+            theme: 'auto',
+            size: 'flexible',
+          }}
+        />
       </div>
 
       <button
