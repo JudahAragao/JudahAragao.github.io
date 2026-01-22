@@ -10,7 +10,7 @@ export function ArticleContent({ content }: ArticleContentProps) {
       <div className="text-body leading-relaxed">
         <SafeHtml 
           html={content} 
-          className="prose-lg prose-headings:font-serif prose-headings:text-heading prose-p:text-body prose-a:text-warm hover:prose-a:underline prose-blockquote:border-warm prose-blockquote:italic"
+          className="prose-lg prose-headings:font-serif prose-headings:text-heading prose-p:text-body prose-a:text-warm hover:prose-a:underline prose-blockquote:border-warm prose-blockquote:italic marker:text-foreground"
         />
       </div>
     </div>
