@@ -13,7 +13,7 @@ import NotFound from "./pages/NotFound";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      retry: false, // Fail immediately on error instead of retrying 3 times
+      retry: 2, // Fail after 2 retries
       refetchOnWindowFocus: false, // Don't refetch when switching tabs
       gcTime: 1000 * 60 * 60 * 24, // 24 hours
     },

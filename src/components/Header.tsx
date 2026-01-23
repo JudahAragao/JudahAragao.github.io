@@ -1,7 +1,7 @@
 import { ThemeToggle } from "./ThemeToggle";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const navLinks = [
   { href: "/#about", label: "Sobre" },
@@ -13,20 +13,6 @@ const navLinks = [
 
 export function Header() {
   const [isOpen, setIsOpen] = useState(false);
-  const location = useLocation();
-
-  const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    // If we are already on the home page and the link is a hash link
-    if (location.pathname === "/" && href.startsWith("/#")) {
-      const id = href.split("#")[1];
-      const element = document.getElementById(id);
-      if (element) {
-        e.preventDefault();
-        element.scrollIntoView({ behavior: "smooth" });
-        setIsOpen(false);
-      }
-    }
-  };
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-divider theme-transition">
@@ -34,7 +20,6 @@ export function Header() {
         <div className="flex items-center justify-between">
           <Link 
             to="/#home" 
-            onClick={(e) => handleLinkClick(e, "/#home")}
             className="font-serif text-xl font-semibold text-heading"
           >
             judah<span className="accent-warm">.</span>aragao
@@ -46,7 +31,6 @@ export function Header() {
               <a
                 key={link.href}
                 href={link.href}
-                onClick={(e) => handleLinkClick(e, link.href)}
                 className="text-sm text-body hover:text-heading transition-colors"
               >
                 {link.label}
@@ -75,7 +59,7 @@ export function Header() {
                 <a
                   key={link.href}
                   href={link.href}
-                  onClick={(e) => handleLinkClick(e, link.href)}
+                  onClick={() => setIsOpen(false)}
                   className="text-body hover:text-heading transition-colors"
                 >
                   {link.label}
