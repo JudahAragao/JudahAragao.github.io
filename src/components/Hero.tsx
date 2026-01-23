@@ -27,7 +27,7 @@ export function Hero() {
   const formattedName = data.name.replace(/className=/g, "class=");
 
   return (
-    <section className="min-h-screen flex items-center justify-center bg-hero-gradient theme-transition pt-20">
+    <section id="home" className="min-h-screen flex items-center justify-center bg-hero-gradient theme-transition pt-20">
       <div className="container mx-auto px-6">
         <div className="max-w-3xl mx-auto text-center">
           <p className="text-subtle text-sm tracking-widest uppercase mb-4 animate-fade-in">
@@ -57,6 +57,13 @@ export function Hero() {
             </a>
             <a
               href="#about"
+              onClick={(e) => {
+                const element = document.getElementById("about");
+                if (element) {
+                  e.preventDefault();
+                  element.scrollIntoView({ behavior: "smooth" });
+                }
+              }}
               className="inline-flex items-center gap-2 px-6 py-3 border border-border rounded-md hover:bg-secondary transition-colors text-body"
             >
               Conhecer mais

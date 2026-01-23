@@ -1,9 +1,22 @@
 import { Github, Linkedin, Twitter, Mail } from "lucide-react";
 import { ContactForm } from "./ContactForm";
 import { useFooter } from "@/hooks/queries";
+import { useLocation } from "react-router-dom";
 
 export function Footer() {
   const { data, isLoading } = useFooter();
+  const location = useLocation();
+
+  const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    if (location.pathname === "/" && href.startsWith("/#")) {
+      const id = href.split("#")[1];
+      const element = document.getElementById(id);
+      if (element) {
+        e.preventDefault();
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  };
 
   if (isLoading) {
     return (
@@ -89,9 +102,27 @@ export function Footer() {
             </div>
             
             <nav className="flex items-center gap-6 text-sm text-body">
-              <a href="#about" className="hover:text-heading transition-colors">Sobre</a>
-              <a href="#projects" className="hover:text-heading transition-colors">Projetos</a>
-              <a href="#blog" className="hover:text-heading transition-colors">Blog</a>
+              <a 
+                href="/#about" 
+                onClick={(e) => handleLinkClick(e, "/#about")}
+                className="hover:text-heading transition-colors"
+              >
+                Sobre
+              </a>
+              <a 
+                href="/#projects" 
+                onClick={(e) => handleLinkClick(e, "/#projects")}
+                className="hover:text-heading transition-colors"
+              >
+                Projetos
+              </a>
+              <a 
+                href="/#blog" 
+                onClick={(e) => handleLinkClick(e, "/#blog")}
+                className="hover:text-heading transition-colors"
+              >
+                Blog
+              </a>
             </nav>
           </div>
         </div>

@@ -1,25 +1,44 @@
 import { ThemeToggle } from "./ThemeToggle";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
 
 const navLinks = [
-  { href: "#about", label: "Sobre" },
-  { href: "#projects", label: "Projetos" },
-  { href: "#skills", label: "Habilidades" },
-  { href: "#education", label: "Formação" },
-  { href: "#blog", label: "Blog" },
+  { href: "/#about", label: "Sobre" },
+  { href: "/#projects", label: "Projetos" },
+  { href: "/#skills", label: "Habilidades" },
+  { href: "/#education", label: "Formação" },
+  { href: "/#blog", label: "Blog" },
 ];
 
 export function Header() {
   const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
+
+  const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    // If we are already on the home page and the link is a hash link
+    if (location.pathname === "/" && href.startsWith("/#")) {
+      const id = href.split("#")[1];
+      const element = document.getElementById(id);
+      if (element) {
+        e.preventDefault();
+        element.scrollIntoView({ behavior: "smooth" });
+        setIsOpen(false);
+      }
+    }
+  };
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-divider theme-transition">
       <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
-          <a href="#" className="font-serif text-xl font-semibold text-heading">
+          <Link 
+            to="/#home" 
+            onClick={(e) => handleLinkClick(e, "/#home")}
+            className="font-serif text-xl font-semibold text-heading"
+          >
             judah<span className="accent-warm">.</span>aragao
-          </a>
+          </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-8">
@@ -27,6 +46,7 @@ export function Header() {
               <a
                 key={link.href}
                 href={link.href}
+                onClick={(e) => handleLinkClick(e, link.href)}
                 className="text-sm text-body hover:text-heading transition-colors"
               >
                 {link.label}
@@ -55,7 +75,7 @@ export function Header() {
                 <a
                   key={link.href}
                   href={link.href}
-                  onClick={() => setIsOpen(false)}
+                  onClick={(e) => handleLinkClick(e, link.href)}
                   className="text-body hover:text-heading transition-colors"
                 >
                   {link.label}
