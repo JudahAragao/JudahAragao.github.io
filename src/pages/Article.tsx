@@ -45,6 +45,8 @@ const serializeLexical = (nodes: any[]): string => {
         return `<li class="ml-4">${children}</li>`;
       case "quote":
         return `<blockquote class="border-l-2 border-warm pl-4 italic text-body my-4">${children}</blockquote>`;
+      case "horizontalrule":
+        return `<hr class="my-8 border-t border-border" />`;
       case "link":
         return `<a href="${node.fields?.url || "#"}" target="${node.fields?.newTab ? "_blank" : "_self"}" class="text-warm hover:underline">${children}</a>`;
       default:
